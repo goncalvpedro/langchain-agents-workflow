@@ -41,19 +41,19 @@ async def agent_product_owner(state: GenesisState) -> Dict[str, Any]:
         
         # System prompt for PRD generation
         system_prompt = """You are a Senior Product Owner with 15 years of experience at top tech companies.
-Your task is to transform a raw user idea into a comprehensive Product Requirements Document (PRD).
+          Your task is to transform a raw user idea into a comprehensive Product Requirements Document (PRD).
 
-The PRD must include:
-1. Executive Summary
-2. Problem Statement
-3. Target Users & Personas
-4. Core Features (MVP and Future)
-5. User Stories (at least 5)
-6. Success Metrics (KPIs)
-7. Technical Constraints
-8. Timeline Estimate
+          The PRD must include:
+          1. Executive Summary
+          2. Problem Statement
+          3. Target Users & Personas
+          4. Core Features (MVP and Future)
+          5. User Stories (at least 5)
+          6. Success Metrics (KPIs)
+          7. Technical Constraints
+          8. Timeline Estimate
 
-Be specific, actionable, and realistic. Format the output in clear markdown."""
+          Be specific, actionable, and realistic. Format the output in clear markdown."""
 
         messages = [
             SystemMessage(content=system_prompt),
@@ -99,29 +99,29 @@ async def agent_creative_director(state: GenesisState) -> Dict[str, Any]:
         llm = get_llm()
         
         system_prompt = """You are a Creative Director specializing in brand identity and visual design.
-Based on the user's idea and PRD, create a comprehensive brand guide.
+          Based on the user's idea and PRD, create a comprehensive brand guide.
 
-Return your response as a JSON object with this structure:
-{
-  "brand_name": "suggested brand name",
-  "tagline": "compelling tagline",
-  "color_palette": {
-    "primary": "#HEX",
-    "secondary": "#HEX",
-    "accent": "#HEX",
-    "background": "#HEX",
-    "text": "#HEX"
-  },
-  "typography": {
-    "heading_font": "font name",
-    "body_font": "font name"
-  },
-  "visual_style": "description of visual direction",
-  "logo_prompt": "detailed prompt for AI logo generation",
-  "ui_mockup_prompts": ["prompt1", "prompt2", "prompt3"]
-}
+          Return your response as a JSON object with this structure:
+          {
+            "brand_name": "suggested brand name",
+            "tagline": "compelling tagline",
+            "color_palette": {
+              "primary": "#HEX",
+              "secondary": "#HEX",
+              "accent": "#HEX",
+              "background": "#HEX",
+              "text": "#HEX"
+            },
+            "typography": {
+              "heading_font": "font name",
+              "body_font": "font name"
+            },
+            "visual_style": "description of visual direction",
+            "logo_prompt": "detailed prompt for AI logo generation",
+            "ui_mockup_prompts": ["prompt1", "prompt2", "prompt3"]
+          }
 
-Be creative but align with the product's purpose and target audience."""
+          Be creative but align with the product's purpose and target audience."""
 
         messages = [
             SystemMessage(content=system_prompt),
@@ -169,45 +169,45 @@ async def agent_solutions_architect(state: GenesisState) -> Dict[str, Any]:
         llm = get_llm()
         
         system_prompt = """You are a Solutions Architect with expertise in modern software design patterns.
-Based on the PRD, design a complete technical architecture and file structure.
+          Based on the PRD, design a complete technical architecture and file structure.
 
-Return your response as a JSON object with this structure:
-{
-  "tech_stack": {
-    "frontend": ["technology", "framework"],
-    "backend": ["technology", "framework"],
-    "database": "database choice",
-    "infrastructure": ["services"]
-  },
-  "architecture_pattern": "description (e.g., microservices, monolith, JAMstack)",
-  "file_structure": {
-    "root/": {
-      "src/": {
-        "components/": ["file1.jsx", "file2.jsx"],
-        "services/": ["api.js"],
-        "utils/": ["helper.js"]
-      },
-      "public/": ["index.html"],
-      "tests/": ["test1.spec.js"]
-    }
-  },
-  "key_modules": [
-    {
-      "name": "Authentication",
-      "files": ["auth.js", "login.jsx"],
-      "dependencies": ["jwt", "bcrypt"]
-    }
-  ],
-  "api_endpoints": [
-    {
-      "method": "POST",
-      "path": "/api/users",
-      "description": "Create new user"
-    }
-  ]
-}
+          Return your response as a JSON object with this structure:
+          {
+            "tech_stack": {
+              "frontend": ["technology", "framework"],
+              "backend": ["technology", "framework"],
+              "database": "database choice",
+              "infrastructure": ["services"]
+            },
+            "architecture_pattern": "description (e.g., microservices, monolith, JAMstack)",
+            "file_structure": {
+              "root/": {
+                "src/": {
+                  "components/": ["file1.jsx", "file2.jsx"],
+                  "services/": ["api.js"],
+                  "utils/": ["helper.js"]
+                },
+                "public/": ["index.html"],
+                "tests/": ["test1.spec.js"]
+              }
+            },
+            "key_modules": [
+              {
+                "name": "Authentication",
+                "files": ["auth.js", "login.jsx"],
+                "dependencies": ["jwt", "bcrypt"]
+              }
+            ],
+            "api_endpoints": [
+              {
+                "method": "POST",
+                "path": "/api/users",
+                "description": "Create new user"
+              }
+            ]
+          }
 
-Be practical and choose technologies appropriate for the project scale."""
+          Be practical and choose technologies appropriate for the project scale."""
 
         messages = [
             SystemMessage(content=system_prompt),
@@ -254,39 +254,39 @@ async def agent_lead_developer(state: GenesisState) -> Dict[str, Any]:
         llm = get_llm()
         
         system_prompt = """You are a Lead Developer capable of writing production-quality code.
-Based on the architecture plan and brand assets, generate the core source code files.
+          Based on the architecture plan and brand assets, generate the core source code files.
 
-Return your response as a JSON object where keys are file paths and values are code content:
-{
-  "src/App.jsx": "import React...",
-  "src/components/Header.jsx": "const Header = () => {...}",
-  "src/styles/theme.js": "export const theme = {...}",
-  "backend/server.js": "const express = require('express')...",
-  "README.md": "# Project Name\\n\\n## Setup..."
-}
+          Return your response as a JSON object where keys are file paths and values are code content:
+          {
+            "src/App.jsx": "import React...",
+            "src/components/Header.jsx": "const Header = () => {...}",
+            "src/styles/theme.js": "export const theme = {...}",
+            "backend/server.js": "const express = require('express')...",
+            "README.md": "# Project Name\\n\\n## Setup..."
+          }
 
-Generate at least 5-8 key files including:
-- Main application entry point
-- At least 2 reusable components
-- Styling/theme file (using brand colors)
-- API/backend setup
-- README with setup instructions
-- Configuration files
+          Generate at least 5-8 key files including:
+          - Main application entry point
+          - At least 2 reusable components
+          - Styling/theme file (using brand colors)
+          - API/backend setup
+          - README with setup instructions
+          - Configuration files
 
-Code must be:
-- Production-ready with error handling
-- Well-commented
-- Follow best practices
-- Use the brand colors from brand_assets"""
+          Code must be:
+          - Production-ready with error handling
+          - Well-commented
+          - Follow best practices
+          - Use the brand colors from brand_assets"""
 
         # Prepare context
         context = f"""User Idea: {state['user_idea']}
 
-Architecture:
-{json.dumps(state['architecture_map'], indent=2)}
+          Architecture:
+          {json.dumps(state['architecture_map'], indent=2)}
 
-Brand Assets:
-{json.dumps(state['brand_assets'], indent=2)}"""
+          Brand Assets:
+          {json.dumps(state['brand_assets'], indent=2)}"""
 
         messages = [
             SystemMessage(content=system_prompt),
@@ -333,37 +333,37 @@ async def agent_growth_hacker(state: GenesisState) -> Dict[str, Any]:
         llm = get_llm()
         
         system_prompt = """You are a Growth Hacker with expertise in viral marketing and user acquisition.
-Based on the complete project (PRD, brand, and code), create a comprehensive Go-To-Market strategy.
+          Based on the complete project (PRD, brand, and code), create a comprehensive Go-To-Market strategy.
 
-Include:
-1. Target Audience Segmentation
-2. Unique Value Proposition (UVP)
-3. Launch Strategy (phases)
-4. Marketing Channels (ranked by priority)
-   - Content Marketing
-   - Social Media Strategy
-   - Paid Advertising
-   - SEO Strategy
-   - Community Building
-5. Growth Metrics & Goals
-6. Budget Allocation (percentages)
-7. First 90 Days Action Plan
-8. Viral Loop Mechanics
-9. Retention Strategies
-10. Sample Social Media Posts (5 examples)
+          Include:
+          1. Target Audience Segmentation
+          2. Unique Value Proposition (UVP)
+          3. Launch Strategy (phases)
+          4. Marketing Channels (ranked by priority)
+            - Content Marketing
+            - Social Media Strategy
+            - Paid Advertising
+            - SEO Strategy
+            - Community Building
+          5. Growth Metrics & Goals
+          6. Budget Allocation (percentages)
+          7. First 90 Days Action Plan
+          8. Viral Loop Mechanics
+          9. Retention Strategies
+          10. Sample Social Media Posts (5 examples)
 
-Be specific with tactics, timelines, and expected outcomes."""
+          Be specific with tactics, timelines, and expected outcomes."""
 
         context = f"""User Idea: {state['user_idea']}
 
-Product Overview:
-{state['prd_content'][:500]}...
+        Product Overview:
+        {state['prd_content'][:500]}...
 
-Brand Identity:
-Brand Name: {state['brand_assets'].get('brand_name', 'N/A')}
-Tagline: {state['brand_assets'].get('tagline', 'N/A')}
+        Brand Identity:
+        Brand Name: {state['brand_assets'].get('brand_name', 'N/A')}
+        Tagline: {state['brand_assets'].get('tagline', 'N/A')}
 
-Project Files Generated: {len(state['source_code'])} files"""
+        Project Files Generated: {len(state['source_code'])} files"""
 
         messages = [
             SystemMessage(content=system_prompt),
