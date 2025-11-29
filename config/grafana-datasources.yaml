@@ -7,3 +7,22 @@ datasources:
     url: http://loki:3100
     isDefault: true
     editable: true
+    uid: loki
+    jsonData:
+      maxLines: 1000
+      timeout: 300
+
+  - name: PostgreSQL
+    type: postgres
+    access: proxy
+    url: postgres:5432
+    database: genesis_pipeline
+    user: genesis_user
+    secureJsonData:
+      password: genesis2024
+    jsonData:
+      sslmode: disable
+      postgresVersion: 1500
+      timescaledb: false
+    editable: true
+    uid: postgres

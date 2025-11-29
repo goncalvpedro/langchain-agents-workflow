@@ -24,5 +24,8 @@ RUN mkdir -p /app/output
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONPATH=/app
 
-# Run the application
-CMD ["python", "main.py"]
+# Expose Streamlit port
+EXPOSE 8501
+
+# Run Streamlit application
+CMD ["streamlit", "run", "src/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

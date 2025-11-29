@@ -1,6 +1,27 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: genesis-postgres
+    environment:
+      - POSTGRES_DB=genesis_pipeline
+      - POSTGRES_USER=genesis_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-genesis2024}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U genesis_user -d genesis_pipeline"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - genesis-network
+
   # Genesis Pipeline Application
   genesis-app:
     build: .
@@ -8,10 +29,15 @@ services:
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - PYTHONUNBUFFERED=1
+      - DATABASE_URL=postgresql://genesis_user:${POSTGRES_PASSWORD:-genesis2024}@postgres:5432/genesis_pipeline
     volumes:
       - ./output:/app/output
       - ./logs:/app/logs
+    ports:
+      - "8501:8501"  # Streamlit default port
     depends_on:
+      postgres:
+        condition: service_healthy
       loki:
         condition: service_started
     restart: unless-stopped
@@ -86,6 +112,7 @@ services:
 volumes:
   loki-data:
   grafana-data:
+  postgres-data:
 
 networks:
   genesis-network:

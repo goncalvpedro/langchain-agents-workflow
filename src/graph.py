@@ -1,6 +1,6 @@
 """
 LangGraph Construction - The Genesis Pipeline Workflow
-Orchestrates the 5 agents with parallel execution and synchronization
+Orchestrates the 6 agents with parallel execution and synchronization
 """
 
 from langgraph.graph import StateGraph, END
@@ -10,7 +10,8 @@ from src.nodes import (
     agent_creative_director,
     agent_solutions_architect,
     agent_lead_developer,
-    agent_growth_hacker
+    agent_growth_hacker,
+    agent_onboarding_specialist
 )
 from src.logger_config import logger
 
@@ -21,7 +22,7 @@ def create_genesis_graph():
     
     Graph Structure:
     START -> Product Owner -> [Creative Director || Solutions Architect] 
-    -> Lead Developer -> Growth Hacker -> END
+    -> Lead Developer -> Growth Hacker -> Onboarding Specialist -> END
     
     Returns:
         Compiled StateGraph ready for execution
@@ -36,6 +37,7 @@ def create_genesis_graph():
     workflow.add_node("solutions_architect", agent_solutions_architect)
     workflow.add_node("lead_developer", agent_lead_developer)
     workflow.add_node("growth_hacker", agent_growth_hacker)
+    workflow.add_node("onboarding_specialist", agent_onboarding_specialist)
     
     # Define edges (workflow)
     
@@ -54,8 +56,11 @@ def create_genesis_graph():
     # Lead Developer feeds into Growth Hacker
     workflow.add_edge("lead_developer", "growth_hacker")
     
-    # Growth Hacker is the terminal node
-    workflow.add_edge("growth_hacker", END)
+    # Growth Hacker feeds into Onboarding Specialist
+    workflow.add_edge("growth_hacker", "onboarding_specialist")
+    
+    # Onboarding Specialist is the terminal node
+    workflow.add_edge("onboarding_specialist", END)
     
     # Compile the graph
     app = workflow.compile()

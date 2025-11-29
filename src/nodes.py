@@ -73,7 +73,7 @@ async def agent_product_owner(state: GenesisState) -> Dict[str, Any]:
         
         return {
             "prd_content": prd_content,
-            "messages": f'{state["messages"]} {[response]}'
+            "messages": state["messages"] + [response]
         }
         
     except Exception as e:
@@ -143,7 +143,7 @@ async def agent_creative_director(state: GenesisState) -> Dict[str, Any]:
         
         return {
             "brand_assets": brand_assets,
-            "messages": f'{state["messages"]} {[response]}'
+            "messages": state["messages"] + [response]
         }
         
     except Exception as e:
@@ -227,7 +227,7 @@ async def agent_solutions_architect(state: GenesisState) -> Dict[str, Any]:
         
         return {
             "architecture_map": architecture_map,
-            "messages": f'{state["messages"]} {[response]}'
+            "messages": state["messages"] + [response]
         }
         
     except Exception as e:
@@ -306,7 +306,7 @@ async def agent_lead_developer(state: GenesisState) -> Dict[str, Any]:
         
         return {
             "source_code": source_code,
-            "messages": f'{state["messages"]} {[response]}'
+            "messages": state["messages"] + [response]
         }
         
     except Exception as e:
@@ -380,7 +380,113 @@ async def agent_growth_hacker(state: GenesisState) -> Dict[str, Any]:
         
         return {
             "marketing_plan": marketing_plan,
-            "messages": f'{state["messages"]} {[response]}'
+            "messages": state["messages"] + [response]
+        }
+        
+    except Exception as e:
+        execution_time = time.time() - start_time
+        log_agent_execution(agent_name, execution_time, 0, 'error', str(e))
+        logger.error(f"Error in {agent_name}: {str(e)}", extra={'agent': agent_name})
+        raise
+
+
+async def agent_onboarding_specialist(state: GenesisState) -> Dict[str, Any]:
+    """
+    AGENT 6: Onboarding Specialist (Final Node)
+    Generates installation and setup guide for the generated project
+    
+    Inputs: source_code, architecture_map, marketing_plan
+    Outputs: install_guide
+    """
+    start_time = time.time()
+    agent_name = "onboarding_specialist"
+    
+    try:
+        logger.info(f"Starting {agent_name} agent", extra={'agent': agent_name, 'status': 'running'})
+        
+        llm = get_llm()
+        
+        system_prompt = """You are an Onboarding Specialist with expertise in technical documentation and developer experience.
+Based on the generated source code and architecture, create a comprehensive INSTALL_GUIDE.md that explains how to set up and run the generated project.
+
+The guide must be specific to the actual architecture and tech stack chosen by the Solutions Architect. Include:
+
+1. **Prerequisites**
+   - Required software versions (Node.js, Python, Docker, etc.)
+   - System requirements
+   - Required accounts/API keys
+
+2. **Installation Steps**
+   - Step-by-step setup instructions
+   - Package/dependency installation commands
+   - Configuration file setup
+   - Environment variable configuration
+
+3. **Project Structure Overview**
+   - Brief explanation of key directories
+   - Important files and their purposes
+
+4. **Running the Project**
+   - Development server startup commands
+   - Production build instructions
+   - Database setup/migration commands (if applicable)
+   - How to verify the installation worked
+
+5. **Common Issues & Troubleshooting**
+   - Typical setup problems and solutions
+   - Debugging tips
+
+6. **Next Steps**
+   - Links to relevant documentation
+   - How to start developing
+
+Be extremely specific with commands, file paths, and configuration. Use the actual tech stack from the architecture_map.
+Do NOT include instructions for running the Genesis Pipeline itself - only for the GENERATED project."""
+
+        # Prepare context with architecture and source code info
+        architecture_summary = json.dumps(state['architecture_map'], indent=2)
+        
+        # Get list of generated files
+        source_files = list(state['source_code'].keys())
+        source_files_summary = "\n".join([f"- {f}" for f in source_files[:20]])  # Show first 20 files
+        
+        # Get tech stack info
+        tech_stack = state['architecture_map'].get('tech_stack', {})
+        tech_stack_summary = json.dumps(tech_stack, indent=2)
+        
+        context = f"""User Idea: {state['user_idea']}
+
+Architecture & Tech Stack:
+{tech_stack_summary}
+
+Full Architecture Map:
+{architecture_summary}
+
+Generated Source Files ({len(state['source_code'])} total):
+{source_files_summary}
+{"... (and more)" if len(source_files) > 20 else ""}
+
+Key Files to Note:
+- Look for package.json, requirements.txt, Dockerfile, or similar dependency files
+- Check for README files or configuration examples
+- Identify entry points (main.js, app.py, index.jsx, etc.)"""
+
+        messages = [
+            SystemMessage(content=system_prompt),
+            HumanMessage(content=context)
+        ]
+        
+        response = await llm.ainvoke(messages)
+        install_guide = response.content
+        
+        execution_time = time.time() - start_time
+        tokens_used = response.response_metadata.get('token_usage', {}).get('total_tokens', 0)
+        
+        log_agent_execution(agent_name, execution_time, tokens_used, 'success')
+        
+        return {
+            "install_guide": install_guide,
+            "messages": state["messages"] + [response]
         }
         
     except Exception as e:

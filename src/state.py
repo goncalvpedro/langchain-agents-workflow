@@ -22,6 +22,7 @@ class GenesisState(TypedDict):
     architecture_map: Dict[str, Any]  # Agent 3: Solutions Architect
     source_code: Dict[str, str]  # Agent 4: Lead Developer (filename -> code)
     marketing_plan: str  # Agent 5: Growth Hacker
+    install_guide: str  # Agent 6: Onboarding Specialist
     
     # Conversation History
     messages: Annotated[Sequence[BaseMessage], add_messages]
@@ -47,6 +48,7 @@ def create_initial_state(user_idea: str) -> GenesisState:
         architecture_map={},
         source_code={},
         marketing_plan="",
+        install_guide="",
         messages=[],
         execution_metadata={
             "start_time": None,
